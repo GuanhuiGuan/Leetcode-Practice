@@ -1,0 +1,21 @@
+class Solution:
+    """
+    @param: s: a string
+    @return: an integer
+    """
+    def lengthOfLongestSubstring(self, s):
+        # write your code here
+        if len(s) < 2:
+            return len(s);
+        re = 1;
+        i = j = 0;
+        dic = {};
+        while j < len(s):
+            if s[j] in dic and dic[s[j]] >= i: #repeated letter which is till in the range of [i, j]
+                i = dic[s[j]] + 1;
+            dic[s[j]] = j;
+            print(i,j)
+            j += 1;
+            re = max(re, j - i);
+            
+        return re;
