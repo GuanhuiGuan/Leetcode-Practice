@@ -1,0 +1,37 @@
+class Solution(object):
+    def minWindow(self, s, t):
+        """
+        :type s: str
+        :type t: str
+        :rtype: str
+        """
+        if len(s) * len(t) == 0:
+            return '';
+        
+        #sliding window
+        dt = collections.Counter(t);#could also mannually loop and count each element
+        left = right = 0;#sliding window
+        front = 0; length = len(s) + 1; #output, set the initial length as the longest, since we're looking for minimum
+        counter = len(t); #if it's 0, the substring is valid
+        
+        while right < len(s):
+            if dt[s[right]] > 0: #s[right] in t
+                counter -= 1;
+            dt[s[right]] -= 1; #this can go under zero, which means there are unnecessary duplicates
+            right += 1; #right has to explore
+            
+            #print(left, right - 1, counter)
+                
+            while counter == 0: #the substring is valid, but it may not be the shortest
+                if right - left < length: #if it is the shortest
+                    front = left;  #record the substring
+                    length = right - left;
+                if dt[s[left]] == 0:
+                    counter += 1;
+                dt[s[left]] += 1;  #start to explore the next possible substring
+                left += 1;
+                
+        if length != len(s) + 1:
+            return s[front: front + length];
+        else:
+            return '';
